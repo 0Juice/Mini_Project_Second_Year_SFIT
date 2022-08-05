@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<conio.h>
+#include<stdlib.h>
 
 char p1_name[100], p2_name[100];               	  	//Player Names
 char c_board[10][21]=                          		//Chess Board Matrix
@@ -20,6 +21,11 @@ int queen(int i, int j, int I,int J);
 int bishop(int i, int j, int I,int J);
 int knight(int i, int j, int I,int J);
 int rook(int i, int j, int I,int J);
+
+void clrscr()										//Clears screen Temporary Func remove and keep system cls in final code
+{
+	system("cls");
+}
 
 int start()                                     	//Game Start Sequence
 {                                               	//Asks Player names and
@@ -127,12 +133,14 @@ int piece_sel()                                 			 //Takes Input for moving
 	king(i, j, I, J);
 	else if(c_board[i][j]=='Q')
 	queen(i, j, I, J);
-	/*else if(c_board[j][i]=='C')							//Activate once Bishop, Knight, Rook codes written
+	else if(c_board[i][j]=='C')							//Activate once Bishop, Knight, Rook codes written
 	bishop(i, j, I, J);
-	else if(c_board[j][i]=='H')
-	knight(i, j, I, J);
-	else if(c_board[j][i]=='E')
-	rook(i, j, I, J);*/
+	//else if(c_board[i][j]=='H')
+	//knight(i, j, I, J);
+	else if(c_board[i][j]=='E')
+	rook(i, j, I, J);
+	//else if(c_board[i][j]=='S')
+	//pawn(i, j, I, J);
 	count++;
 	return 0;
 }
@@ -162,173 +170,128 @@ int move(int i, int j, int I, int J)
 
 int king(int i, int j, int I, int J)								//Done
 {
-	int count = 0;
-	if(I != i+2 || J != j)
-		if(I != i-2 || J != j)
-			if(I != i || J == j+1)
-				if(I != i || J != j-1)
-				count = 0;
-				else
-				count = 1;
-			else
-			count = 1;
-		else
-		count = 1;
-	else
-	count = 1;
-	if(count == 1)
-	move(i, j, I, J);
-	else
+	if(I == i && J == j+2)
+	{
+		move(i, j, I, J);
+		return 0;
+	}
+
+	if(I == i && J == j-2)
+	{
+		move(i, j, I, J);
+		return 0;
+	}
+
+	if(I == i+1 && J == j)
+	{
+		move(i, j, I, J);
+		return 0;
+	}
+
+	if(I == i-1 && J == j)
+	{
+		move(i, j, I, J);
+		return 0;
+	}
+	
 	printf("Invalid Move");
+	getch();
 	return 0;
 }
 
 int queen(int i, int j, int I,int J)								//Done
 {
-	int count = 0, x, y;
+	int x, y;
 
-	for(x=2, y=1 ; x<=8 ; x += 2, y++)									//Queen Horizontal and Vertical Move
+	for(x=2, y=1 ; x<=8 ; x += 2, y++)									
 	{
-		if(I != i+x || J != j)
-			if(I != i-x || J != j)
-				if(I != i || J != j+y)
-					if(I != i || J != j-y)
-						count = 0;
-		if(count == 1)
-			{
-				move(i, j, I, J);
-				return 0;
-			}
-	}
-
-	for (x=1 ; x<=8 ; x++)											//Queen Vertical Move
-	{
-		if(I != i || J != j+x)
-			if(I != i || J != j-x)
-				count = 0;
-			else
-			{
-				count = 1;
-				break;
-			}
-		else
+		if(I == i && J == j+x)										//Queen Horizontal Move
 		{
-			count = 1;
-			break;
+			move(i, j, I, J);
+			return 0;
 		}
-	}
-	if(count == 1)
-	{
-		move(i, j, I, J);
-		return 0;
-	}
 
-	for (x=1, y=1 ; x<=8 ; x+=2, y++)											//Queen Left to Right Diagonal Move
-	{
-		if(I != i+x || J != j+x)
-			if(I != i-x || J != j-x)
-				count = 0;
-			else
-			{
-				count = 1;
-				break;
-			}
-		else
+		if(I == i && J == j-x)										
 		{
-			count = 1;
-			break;
+			move(i, j, I, J);
+			return 0;
 		}
-	}
-	if(count == 1)
-	{
-		move(i, j, I, J);
-		return 0;
-	}
 
-	for (x=1 ; x<=8 ; x++)											//Queen Right to Left Diagonal Move
-	{
-		if(I != i-x || J != j+x)
-			if(I != i+x || J != j-x)
-				count = 0;
-			else
-			{
-				count = 1;
-				break;
-			}
-		else
+		if(I == i+y && J == j)										//Queen Vertical Move
 		{
-			count = 1;
-			break;
+			move(i, j, I, J);
+			return 0;
 		}
-	}
-	if(count == 1)
-	{
-		move(i, j, I, J);
-		return 0;
-	}
-	else
-	{
-		printf("Invalid Move");
-		return 0;
-	}
 
+		if(I == i-y && J == j)										
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i+y && J == j+x)									//Queen Diagonal Move Bottom Left to Top Right
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j-x)
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j+x)									//Queen Diagonal Move Top Left to Bottom Right
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j-x)
+		{
+			move(i, j, I, J);
+			return 0;
+		}			
+	}
+	printf("Invalid Move");
+	getch();	
+	return 0;
 }
 
-/*int bishop(int i, int j, int I, int J)								//Not Done
+int bishop(int i, int j, int I, int J)								//Done
 {
-	int count = 0, x;
+	int x, y;
 
-	for (x=1 ; x<=8 ; x++)											//Bishop Left to Right Diagonal Move
+	for(x=2, y=1 ; x<=8 ; x += 2, y++)
 	{
-		if(I != i+x || J != j+x)
-			if(I != i-x || J != j-x)
-				count = 0;
-			else
-			{
-				count = 1;
-				break;
-			}
-		else
+		if(I == i+y && J == j+x)									//Bishop Diagonal Move Bottom Left to Top Right
 		{
-			count = 1;
-			break;
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j-x)
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j+x)									//Bishop Diagonal Move Top Left to Bottom Right
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j-x)
+		{
+			move(i, j, I, J);
+			return 0;
 		}
 	}
-	if(count == 1)
-	{
-		move(i, j, I, J);
-		return 0;
-	}
-
-	for (x=1 ; x<=8 ; x++)											//Bishop Right to Left Diagonal Move
-	{
-		if(I != i-x || J != j+x)
-			if(I != i+x || J != j-x)
-				count = 0;
-			else
-			{
-				count = 1;
-				break;
-			}
-		else
-		{
-			count = 1;
-			break;
-		}
-	}
-	if(count == 1)
-	{
-		move(i, j, I, J);
-		return 0;
-	}
-	else
-	{
-		printf("Invalid Move");
-		return 0;
-	}
-
-
-}*/
+	printf("Invalid Move");
+	getch();
+	return 0;
+}
 
 /*int knight(int i, int j, int I, int J)								//Not Done
 {
@@ -351,26 +314,39 @@ int queen(int i, int j, int I,int J)								//Done
 	return 0;
 }*/
 
-/*int rook(int i, int j, int I, int J)								//Not Done
+int rook(int i, int j, int I, int J)								//Done
 {
-	int count = 0;
-	if(I != i+2 || J != j)
-		if(I != i-2 || J != j)
-			if(I != i || J == j+1)
-				if(I != i || J != j-1)
-				count = 0;
-				else
-				count = 1;
-			else
-			count = 1;
-		else
-		count = 1;
-	else
-	count = 1;
-	if(count == 1)
-	move(i, j, I, J);
+	int x, y;
+	for(x=2, y=1 ; x<=8 ; x += 2, y++)
+	{
+		if(I == i && J == j+x)										//Rook Horizontal Move
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i && J == j-x)										
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i+y && J == j)										//Rook Vertical Move
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+
+		if(I == i-y && J == j)										
+		{
+			move(i, j, I, J);
+			return 0;
+		}
+	}
+	printf("Invalid Move");
+	getch();
 	return 0;
-}*/
+}
 
 /*int pawn(int i, int j, int I, int J)								//Not Done
 {
