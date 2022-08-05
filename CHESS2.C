@@ -15,7 +15,7 @@ char c_board[10][21]=                          		//Chess Board Matrix
 	{"1EwHwCwQwKwCwHwEw1\0"},
 	{" A B C D E F G H  \0"},
 };
-int king(int i, int j, int I, int J);
+int king(int i, int j, int I, int J);				//Piece Wrong Movement Functions
 int queen(int i, int j, int I,int J);
 int bishop(int i, int j, int I,int J);
 int knight(int i, int j, int I,int J);
@@ -52,8 +52,8 @@ int piece_sel()                                 			 //Takes Input for moving
 {                                               			 //pieces
 
 	static int count=1;                     				 //Move Counter
-	int i = 1, j = 8, I = 1, J = 8, x, y, move = 0;                                     //i,j are Piece Coordinates and I,J are Move Coordinates Move is a counter for black or white move white = 0 black = 1
-	char col, Col, row, Row, temp[2], loc[2], Loc[2];									//
+	int i = 8, j = 1, I = 8, J = 1, x, move = 0;                                     //i,j are Piece Coordinates and I,J are Move Coordinates Move is a counter for black or white move white = 0 black = 1
+	char col, Col, row, Row, loc[2], Loc[2];									//
 	if(count % 2)
 	{
 		printf("It is White's Move \n");
@@ -70,23 +70,24 @@ int piece_sel()                                 			 //Takes Input for moving
 	gets(loc);
 	col=loc[0];
 	row=loc[1];
-	for(x=65;x<col;x++)
-	{
-		i=i+2;
-	}
+
 	for(x=49;x<row;x++)
 	{
-		j--;
+		i--;
+	}
+	for(x=65;x<col;x++)
+	{
+		j=j+2;
 	}
 
-	if(move==1 && c_board[j][i+1]=='w')				//Wrong Colour Piece Movement Detector
+	if(move==1 && c_board[i][j+1]=='w')				//Wrong Colour Piece Selection Detector
 	{
 		printf("Black can't move that piece \n");
 		getch();
 		return 0;
 	}
 
-	else if(move==0 && c_board[j][i+1]=='b')
+	else if(move==0 && c_board[i][j+1]=='b')
 	{
 		printf("White can't move that piece \n");
 		getch();
@@ -98,34 +99,35 @@ int piece_sel()                                 			 //Takes Input for moving
 	gets(Loc);
 	Col=Loc[0];
 	Row=Loc[1];
-	for(x=65;x<Col;x++)
-	{
-		I=I+2;
-	}
+	
 	for(x=49;x<Row;x++)
 	{
-		J--;
+		I--;
+	}
+	for(x=65;x<Col;x++)
+	{
+		J=J+2;
 	}
 
-	if(move==0 && c_board[J][I+1]=='w')						//Own Piece Killing Avoidance
+	if(move==0 && c_board[I][J+1]=='w')						//Own Piece Killing Avoidance
 	{
 		printf("There is already a White Piece there \n");
 		getch();
 		return 0;
 	}
 
-	else if(move==1 && c_board[J][I+1]=='b')
+	else if(move==1 && c_board[I][J+1]=='b')
 	{
 		printf("There is already a Black Piece there \n");
 		getch();
 		return 0;
 	}
 
-	if(c_board[j][i]=='K')									//Piece Detection and Movement Validator
+	if(c_board[i][j]=='K')									//Piece Detection and Movement Validator
 	king(i, j, I, J);
-	else if(c_board[j][i]=='Q')
+	else if(c_board[i][j]=='Q')
 	queen(i, j, I, J);
-	/*else if(c_board[j][i]=='C')
+	/*else if(c_board[j][i]=='C')							//Activate once Bishop, Knight, Rook codes written
 	bishop(i, j, I, J);
 	else if(c_board[j][i]=='H')
 	knight(i, j, I, J);
@@ -138,21 +140,21 @@ int piece_sel()                                 			 //Takes Input for moving
 int move(int i, int j, int I, int J)
 {						 						//Piece Movement
 	char temp[2];
-	if(c_board[J][I]==' ')                   	//For Empty Space Movement
+	if(c_board[I][J]==' ')                   	//For Moving in a Empty Space 
 	{
-		temp[0] = c_board[J][I];
-		temp[1] = c_board[J][I+1];
-		c_board[J][I] = c_board[j][i];
-		c_board[J][I+1] = c_board[j][i+1];
-		c_board[j][i] = temp[0];
-		c_board[j][i+1] = temp[1];
+		temp[0] = c_board[I][J];
+		temp[1] = c_board[I][J+1];
+		c_board[I][J] = c_board[i][j];
+		c_board[I][J+1] = c_board[i][j+1];
+		c_board[i][j] = temp[0];
+		c_board[i][j+1] = temp[1];
 	}
-	else                                     	//For Capture Movement
+	else                                     	//For Capturing Piece
 	{
-		c_board[J][I] = c_board[j][i];
-		c_board[J][I+1] = c_board[j][i+1];
-		c_board[j][i] = ' ';
-		c_board[j][i+1] = ' ';
+		c_board[I][J] = c_board[i][j];
+		c_board[I][J+1] = c_board[i][j+1];
+		c_board[i][j] = ' ';
+		c_board[i][j+1] = ' ';
 	}
 	return 0;
 
