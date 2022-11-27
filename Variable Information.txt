@@ -1,0 +1,31 @@
+Global Variables:
+char p1_name : Saves First Player Name
+char p2_name : Saves Second Player Name
+char c_board : Chess Board 2D Array
+
+int board():
+int i : Row Index (1,2,3,4,5,6,7,8)
+int j : Column Index (A,B,C,D,E,F,G,H)
+
+int piece_sel():
+static int count=1 : Move Counter
+int i = 8 : Row Index of Sel_Piece
+int j = 1 : Column Index of Sel_Piece
+int I = 8 : Row Index of Sel_Piece_Drop_Loc
+int J = 1 : Column Index of Sel_Piec_Drop_Loc
+int x : For Loops Initialised Index
+int move = 0 : Move Flag if 0 white's move
+char col : Column Location of Sel_Piece in Visible Array 
+char Col : Column Location of Sel_Piece_Drop_Loc in Visible Array
+char row : Row Location of Sel_Piece in Visible Array
+char Row : Row Location of Sel_Piece_Drop_Loc in Visible Array
+char loc : String to store Sel_Piece location
+char Loc : String to store Sel_Piece_Drop_Loc
+
+int move(int i, int j, int I, int J):
+char temp : String to store replaced tile temp
+int i, j, I, J : Same as int piece_sel() func
+
+int main():
+int chc_mate=0 : Flag for checkmate
+i=0 : Index for do while loop
